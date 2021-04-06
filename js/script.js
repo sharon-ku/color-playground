@@ -10,37 +10,20 @@ Here is a description of this template p5 project.
 // Count turn we are at
 let currentTurn = 0;
 
-let rectangle1;
-
-let rect1 = {
-  fill: {
-    r: 255,
-    g: 0,
-    b: 0,
-  },
-  x: 100,
-  y: 100,
-  width: 50,
-  height: 50,
-};
-
-let rect2 = {
-  fill: {
-    r: 0,
-    g: 255,
-    b: 0,
-  },
-  x: 200,
-  y: 100,
-  width: 50,
-  height: 50,
-};
+// Contains JSON file
+let rectangle;
 
 let dropBox1 = {
+  // position
   x: 700,
   y: 500,
+  // size
   width: 50,
   height: 50,
+  // stroke
+  strokeFill: 0,
+  strokeWeight: 5,
+  // fill
   fill: {
     r: 255,
     g: 255,
@@ -49,10 +32,16 @@ let dropBox1 = {
 };
 
 let dropBox2 = {
+  // position
   x: 700,
   y: 550,
+  // size
   width: 50,
   height: 50,
+  // stroke
+  strokeFill: 0,
+  strokeWeight: 5,
+  // fill
   fill: {
     r: 255,
     g: 255,
@@ -67,6 +56,13 @@ let artwork = {
   height: 650,
   fill: 255,
 };
+
+// preload()
+//
+// Preload JSON file
+function preload() {
+  rectangle = loadJSON(`assets/data/rectangles.json`);
+}
 
 // setup()
 //
@@ -89,28 +85,45 @@ function draw() {
   pop();
 
   // Drop box 1
-  push();
-  rectMode(CENTER);
-  stroke(0);
-  strokeWeight(5);
-  fill(dropBox1.fill.r, dropBox1.fill.g, dropBox1.fill.b);
-  rect(dropBox1.x, dropBox1.y, dropBox1.width, dropBox1.height);
-  pop();
+  drawDropBox(dropBox1);
 
   // Drop box 2
+  drawDropBox(dropBox2);
+
+  let locationIndex = 0;
+  // Property from specific rectangle in JSON file
+  for (
+    let i = 0;
+    i < rectangle.rectangleProperties[locationIndex].rectangles.length;
+    i++
+  ) {
+    let rectangleProperties =
+      rectangle.rectangleProperties[locationIndex].rectangles[i];
+
+    displayRect(rectangleProperties);
+
+    if (checkOverlap(rectangleProperties)) {
+      // If current turn is an even number, update dropBox1 color
+      if (currentTurn % 2 == 0) {
+        dropBox1.fill = rectangleProperties.fill;
+      }
+      // Or else, if odd number, update dropBox2 color
+      else {
+        dropBox2.fill = rectangleProperties.fill;
+      }
+    }
+  }
+}
+
+// Draw dropboxes
+function drawDropBox(dropBox) {
   push();
   rectMode(CENTER);
-  stroke(0);
-  strokeWeight(5);
-  fill(dropBox2.fill.r, dropBox2.fill.g, dropBox2.fill.b);
-  rect(dropBox2.x, dropBox2.y, dropBox2.width, dropBox2.height);
+  stroke(dropBox.strokeFill);
+  strokeWeight(dropBox.strokeWeight);
+  fill(dropBox.fill.r, dropBox.fill.g, dropBox.fill.b);
+  rect(dropBox.x, dropBox.y, dropBox.width, dropBox.height);
   pop();
-
-  // Red rect1
-  displayRect(rect1);
-
-  // Green rect2
-  displayRect(rect2);
 }
 
 // Display a rectangle using given arguments
@@ -149,25 +162,6 @@ function checkOverlap(rectangle) {
 }
 
 function mouseReleased() {
-  if (checkOverlap(rect1)) {
-    // If current turn is an even number, update dropBox1 color
-    if (currentTurn % 2 == 0) {
-      dropBox1.fill = rect1.fill;
-    }
-    // Or else, if odd number, update dropBox2 color
-    else {
-      dropBox2.fill = rect1.fill;
-    }
-  } else if (checkOverlap(rect2)) {
-    // If current turn is an even number, update dropBox1 color
-    if (currentTurn % 2 == 0) {
-      dropBox1.fill = rect2.fill;
-    }
-    // Or else, if odd number, update dropBox2 color
-    else {
-      dropBox2.fill = rect2.fill;
-    }
-  }
   // Add 1 to number of turns
   currentTurn++;
 

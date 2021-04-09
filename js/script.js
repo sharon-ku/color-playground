@@ -62,7 +62,7 @@ let artwork = {
   fill: 255,
 };
 
-let img = undefined;
+let artworkImage = undefined;
 
 // preload()
 //
@@ -70,17 +70,15 @@ let img = undefined;
 function preload() {
   rectangle = loadJSON(`assets/data/rectangles.json`);
 
-  img = loadImage(`assets/images/clown.png`);
+  artworkImage = loadImage(`assets/images/artwork.jpg`);
 }
 
 // setup()
 //
-// Description of setup() goes here.
+// Create canvas, set no stroke
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
-
-  image(img, 0, 0, width, height);
 }
 
 // draw()
@@ -89,16 +87,16 @@ function setup() {
 function draw() {
   background(0);
 
-  push();
-  fill(artwork.fill);
-  // artwork.y = height / 2 - artwork.height / 2;
-  rect(artwork.x, artwork.y, artwork.width, artwork.height);
-  pop();
+  // Display black area for artwork
+  // push();
+  // fill(artwork.fill);
+  // // artwork.y = height / 2 - artwork.height / 2;
+  // rect(artwork.x, artwork.y, artwork.width, artwork.height);
+  // pop();
 
-  // Display clown image
+  // Display artwork image
   push();
-  imageMode(CENTER);
-  image(img,100,300);
+  image(artworkImage, artwork.x, artwork.y);
   pop();
 
   // Display color picker

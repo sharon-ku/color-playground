@@ -5,7 +5,6 @@ Sharon Ku
 Here is a description of this template p5 project.
 
 ** Attributions **
-
 Code for color picker from: https://www.youtube.com/watch?v=8fJ2xGq5e7s&ab_channel=geeknrd
 "how to make an eyedropper tool in p5.js" by geeknrd
 **************************************************/
@@ -18,6 +17,18 @@ let currentTurn = 0;
 // Contains JSON file
 let rectangle;
 
+// Stores RGBA value of color picker
+let colorValue = undefined;
+
+// Color picker
+let colorPicker = {
+  outsideDiameter: 60,
+  insideDiameter: 55,
+  strokeWeight: 7,
+  outerStrokeFill: 0,
+};
+
+// Box 1 to drop color into
 let dropBox1 = {
   // position
   x: 700,
@@ -33,9 +44,11 @@ let dropBox1 = {
     r: 255,
     g: 255,
     b: 255,
+    alpha: 255,
   },
 };
 
+// Box 2 to drop color into
 let dropBox2 = {
   // position
   x: 700,
@@ -51,26 +64,29 @@ let dropBox2 = {
     r: 255,
     g: 255,
     b: 255,
+    alpha: 255,
   },
 };
 
+// Artwork
 let artwork = {
   x: 50,
   y: 50,
   width: 600,
   height: 650,
   fill: 255,
+  image: undefined,
 };
-
-let artworkImage = undefined;
 
 // preload()
 //
-// Preload JSON file
+// Preload assets
 function preload() {
+  // Load JSON file
   rectangle = loadJSON(`assets/data/rectangles.json`);
 
-  artworkImage = loadImage(`assets/images/artwork.jpg`);
+  // Load artwork image
+  artwork.image = loadImage(`assets/images/artwork.jpg`);
 }
 
 // setup()
@@ -96,18 +112,23 @@ function draw() {
 
   // Display artwork image
   push();
-  image(artworkImage, artwork.x, artwork.y);
+  image(artwork.image, artwork.x, artwork.y);
   pop();
+
+  // Store RGBA color value of pixel in image
+  colorValue = get(mouseX, mouseY);
+
+  // console.log(colorValue);
 
   // Display color picker
   push();
-  strokeWeight(10);
-  stroke(0);
+  strokeWeight(colorPicker.strokeWeight);
+  stroke(colorPicker.outerStrokeFill);
   noFill();
-  ellipse(mouseX, mouseY, 80);
-  stroke(get(mouseX, mouseY));
+  ellipse(mouseX, mouseY, colorPicker.outsideDiameter);
+  stroke(colorValue);
   noFill();
-  ellipse(mouseX, mouseY, 75);
+  ellipse(mouseX, mouseY, colorPicker.insideDiameter);
   pop();
 
   // Drop box 1
@@ -116,29 +137,29 @@ function draw() {
   // Drop box 2
   drawDropBox(dropBox2);
 
-  let locationIndex = 0;
-  // Property from specific rectangle in JSON file
-  for (
-    let i = 0;
-    i < rectangle.rectangleProperties[locationIndex].rectangles.length;
-    i++
-  ) {
-    let rectangleProperties =
-      rectangle.rectangleProperties[locationIndex].rectangles[i];
-
-    displayRect(rectangleProperties);
-
-    if (checkOverlap(rectangleProperties)) {
-      // If current turn is an even number, update dropBox1 color
-      if (currentTurn % 2 == 0) {
-        dropBox1.fill = rectangleProperties.fill;
-      }
-      // Or else, if odd number, update dropBox2 color
-      else {
-        dropBox2.fill = rectangleProperties.fill;
-      }
-    }
-  }
+  // let locationIndex = 0;
+  // // Property from specific rectangle in JSON file
+  // for (
+  //   let i = 0;
+  //   i < rectangle.rectangleProperties[locationIndex].rectangles.length;
+  //   i++
+  // ) {
+  //   let rectangleProperties =
+  //     rectangle.rectangleProperties[locationIndex].rectangles[i];
+  //
+  //   displayRect(rectangleProperties);
+  //
+  //   if (checkOverlap(rectangleProperties)) {
+  //     // If current turn is an even number, update dropBox1 color
+  //     if (currentTurn % 2 == 0) {
+  //       dropBox1.fill = rectangleProperties.fill;
+  //     }
+  //     // Or else, if odd number, update dropBox2 color
+  //     else {
+  //       dropBox2.fill = rectangleProperties.fill;
+  //     }
+  //   }
+  // }
 }
 
 // Draw dropboxes
@@ -188,6 +209,21 @@ function checkOverlap(rectangle) {
 }
 
 function mouseReleased() {
+  // If current turn is an even number, update dropBox1 color
+  if (currentTurn % 2 == 0) {
+    dropBox1.fill.r = colorValue[0];
+    dropBox1.fill.g = colorValue[1];
+    dropBox1.fill.b = colorValue[2];
+    dropBox1.fill.alpha = colorValue[3];
+  }
+  // Or else, if odd number, update dropBox2 color
+  else {
+    dropBox2.fill.r = colorValue[0];
+    dropBox2.fill.g = colorValue[1];
+    dropBox2.fill.b = colorValue[2];
+    dropBox2.fill.alpha = colorValue[3];
+  }
+
   // Add 1 to number of turns
   currentTurn++;
 

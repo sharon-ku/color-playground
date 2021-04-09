@@ -3,6 +3,11 @@ Interactive Canvas
 Sharon Ku
 
 Here is a description of this template p5 project.
+
+** Attributions **
+
+Code for color picker from: https://www.youtube.com/watch?v=8fJ2xGq5e7s&ab_channel=geeknrd
+"how to make an eyedropper tool in p5.js" by geeknrd
 **************************************************/
 
 "use strict";
@@ -57,11 +62,15 @@ let artwork = {
   fill: 255,
 };
 
+let img = undefined;
+
 // preload()
 //
 // Preload JSON file
 function preload() {
   rectangle = loadJSON(`assets/data/rectangles.json`);
+
+  img = loadImage(`assets/images/clown.png`);
 }
 
 // setup()
@@ -70,6 +79,8 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
+
+  image(img, 0, 0, width, height);
 }
 
 // draw()
@@ -82,6 +93,23 @@ function draw() {
   fill(artwork.fill);
   // artwork.y = height / 2 - artwork.height / 2;
   rect(artwork.x, artwork.y, artwork.width, artwork.height);
+  pop();
+
+  // Display clown image
+  push();
+  imageMode(CENTER);
+  image(img,100,300);
+  pop();
+
+  // Display color picker
+  push();
+  strokeWeight(10);
+  stroke(0);
+  noFill();
+  ellipse(mouseX, mouseY, 80);
+  stroke(get(mouseX, mouseY));
+  noFill();
+  ellipse(mouseX, mouseY, 75);
   pop();
 
   // Drop box 1

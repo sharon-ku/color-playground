@@ -1,2 +1,3 @@
-# interactive-canvas
- Interactive canvas for learning about colors!
+# Color Playground
+
+Interactive canvas for learning about colors!

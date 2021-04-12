@@ -28,14 +28,14 @@ let colorPicker = {
 // Box 1 to drop color into
 let dropBox1 = {
   // position
-  x: 700,
-  y: 500,
+  x: 750,
+  y: 470,
   // size
-  width: 50,
-  height: 50,
+  width: 80,
+  height: 80,
   // stroke
   strokeFill: 0,
-  strokeWeight: 5,
+  strokeWeight: 0,
   // fill
   fill: {
     r: 255,
@@ -48,14 +48,14 @@ let dropBox1 = {
 // Box 2 to drop color into
 let dropBox2 = {
   // position
-  x: 700,
-  y: 550,
+  x: 750,
+  y: 555.05,
   // size
-  width: 50,
-  height: 50,
+  width: 80,
+  height: 80,
   // stroke
   strokeFill: 0,
-  strokeWeight: 5,
+  strokeWeight: 0,
   // fill
   fill: {
     r: 255,
@@ -65,12 +65,22 @@ let dropBox2 = {
   },
 };
 
+// Arrow
+let arrow = undefined;
+// Store arrow image
+let arrowImage = undefined;
+// Arrow positions
+let arrowX = undefined;
+let arrowY = undefined;
+// Arrow will be positioned relative to this drop box
+let dropBoxToPosition = undefined;
+
 // Artwork
 let artwork = {
   x: 50,
   y: 50,
   width: 600,
-  height: 650,
+  height: 600,
   fill: 255,
   image: undefined,
 };
@@ -81,6 +91,8 @@ let artwork = {
 function preload() {
   // Load artwork image
   artwork.image = loadImage(`assets/images/artwork.jpg`);
+  // Load arrow image
+  arrowImage = loadImage(`assets/images/arrow.png`);
 }
 
 // setup()
@@ -89,6 +101,10 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
+
+  // Defined initlal arrow image positions
+  arrowX = dropBox1.x + 70;
+  arrowY = dropBox1.y;
 }
 
 // draw()
@@ -105,6 +121,12 @@ function draw() {
 
   // Store RGBA color value of pixel in image
   colorValue = get(mouseX, mouseY);
+
+  // Display arrow image
+  push();
+  imageMode(CENTER);
+  image(arrowImage, dropBox1.x + 70, dropBoxToPosition);
+  pop();
 
   // console.log(colorValue);
 
@@ -124,6 +146,22 @@ function draw() {
 
   // Drop box 2
   drawDropBox(dropBox2);
+
+  // // If current turn is an even number:
+  // if (currentTurn % 2 == 0) {
+  //   // Update dropBox1 color
+  //   dropBox1.fill.r = colorValue[0];
+  //   dropBox1.fill.g = colorValue[1];
+  //   dropBox1.fill.b = colorValue[2];
+  //   dropBox1.fill.alpha = colorValue[3];
+  // }
+  // // Or else, if odd number, update dropBox2 color
+  // else {
+  //   dropBox2.fill.r = colorValue[0];
+  //   dropBox2.fill.g = colorValue[1];
+  //   dropBox2.fill.b = colorValue[2];
+  //   dropBox2.fill.alpha = colorValue[3];
+  // }
 }
 
 // Draw dropboxes
@@ -138,12 +176,22 @@ function drawDropBox(dropBox) {
 }
 
 function mouseReleased() {
-  // If current turn is an even number, update dropBox1 color
+  // If current turn is an even number:
   if (currentTurn % 2 == 0) {
+    // Update dropBox1 color
     dropBox1.fill.r = colorValue[0];
     dropBox1.fill.g = colorValue[1];
     dropBox1.fill.b = colorValue[2];
     dropBox1.fill.alpha = colorValue[3];
+    // Update arrow position
+    dropBoxToPosition = dropBox2.y;
+    // // Update strokeweight
+    // dropBox1.strokeWeight = 5;
+    // dropBox2.strokeWeight = 0;
+    dropBox1.width = 80;
+    dropBox1.height = 80;
+    dropBox2.width = 90;
+    dropBox2.height = 90;
   }
   // Or else, if odd number, update dropBox2 color
   else {
@@ -151,6 +199,15 @@ function mouseReleased() {
     dropBox2.fill.g = colorValue[1];
     dropBox2.fill.b = colorValue[2];
     dropBox2.fill.alpha = colorValue[3];
+    // Update arrow position
+    dropBoxToPosition = dropBox1.y;
+    // // Update strokeweight
+    // dropBox1.strokeWeight = 0;
+    // dropBox2.strokeWeight = 5;
+    dropBox1.width = 90;
+    dropBox1.height = 90;
+    dropBox2.width = 80;
+    dropBox2.height = 80;
   }
 
   // Add 1 to number of turns

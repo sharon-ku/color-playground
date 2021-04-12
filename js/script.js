@@ -49,7 +49,7 @@ let dropBox1 = {
 let dropBox2 = {
   // position
   x: 750,
-  y: 555.05,
+  y: 555,
   // size
   width: 80,
   height: 80,

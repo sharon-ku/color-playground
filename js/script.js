@@ -1,8 +1,9 @@
 /**************************************************
-Interactive Canvas
+Color Playground
 Sharon Ku
 
-Here is a description of this template p5 project.
+The goal is to try matching the colored squares together to learn more about colors!
+**Note: some squares do not have a matching pair (tricky tricky!)
 
 ** Attributions **
 Code for color picker from: https://www.youtube.com/watch?v=8fJ2xGq5e7s&ab_channel=geeknrd

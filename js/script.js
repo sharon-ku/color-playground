@@ -122,6 +122,7 @@ function draw() {
 
   // Store RGBA color value of pixel in image
   colorValue = get(mouseX, mouseY);
+  console.log(colorValue);
 
   // Display arrow image
   push();

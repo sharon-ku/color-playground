@@ -12,6 +12,48 @@ Code for color picker from: https://www.youtube.com/watch?v=8fJ2xGq5e7s&ab_chann
 
 "use strict";
 
+// Number of contrast types
+const NUM_CONTRAST_TYPES = 7;
+let colorContrastCount = 0;
+const MIN_CONTRAST_NUMBER = 1;
+
+// Delay before switching to next contrast type
+const DELAY_SWITCH_CONTRAST = 10000;
+
+// Hide all color contrasts except for first one initially
+for (let i = MIN_CONTRAST_NUMBER + 1; i < NUM_CONTRAST_TYPES + 1; i++) {
+  $(`#contrast${i}`).hide();
+}
+
+// Every 10 seconds, change info on Itten's color contrasts
+setInterval(function () {
+  // Add count and display next contrast information
+  if (colorContrastCount != NUM_CONTRAST_TYPES) {
+    // Hide current contrast info
+    $(`#contrast${colorContrastCount}`).hide();
+    // Update count
+    colorContrastCount += 1;
+    // Show next contrast info
+    $(`#contrast${colorContrastCount}`).show();
+  }
+  // If reach last type of contrast, restart count
+  else if (colorContrastCount === NUM_CONTRAST_TYPES) {
+    $(`#contrast${colorContrastCount}`).hide();
+    colorContrastCount = MIN_CONTRAST_NUMBER;
+    $(`#contrast${colorContrastCount}`).show();
+  }
+}, DELAY_SWITCH_CONTRAST);
+
+// Create accordion
+// $("#info-box").accordion();
+
+// Create button
+$(`#open-info-box`).button();
+
+$(`#open-info-box`).click(function () {
+  $(`#info-box`).toggle("slide", 1000);
+});
+
 // Count turn we are at
 let currentTurn = 0;
 
@@ -122,7 +164,7 @@ function draw() {
 
   // Store RGBA color value of pixel in image
   colorValue = get(mouseX, mouseY);
-  console.log(colorValue);
+  // console.log(colorValue);
 
   // Display arrow image
   push();
@@ -178,40 +220,47 @@ function drawDropBox(dropBox) {
 }
 
 function mouseReleased() {
-  // If current turn is an even number:
-  if (currentTurn % 2 == 0) {
-    // Update dropBox1 color
-    dropBox1.fill.r = colorValue[0];
-    dropBox1.fill.g = colorValue[1];
-    dropBox1.fill.b = colorValue[2];
-    dropBox1.fill.alpha = colorValue[3];
-    // Update arrow position
-    dropBoxToPosition = dropBox2.y;
-    // // Update strokeweight
-    // dropBox1.strokeWeight = 5;
-    // dropBox2.strokeWeight = 0;
-    dropBox1.width = 80;
-    dropBox1.height = 80;
-    dropBox2.width = 90;
-    dropBox2.height = 90;
-  }
-  // Or else, if odd number, update dropBox2 color
-  else {
-    dropBox2.fill.r = colorValue[0];
-    dropBox2.fill.g = colorValue[1];
-    dropBox2.fill.b = colorValue[2];
-    dropBox2.fill.alpha = colorValue[3];
-    // Update arrow position
-    dropBoxToPosition = dropBox1.y;
-    // // Update strokeweight
-    // dropBox1.strokeWeight = 0;
-    // dropBox2.strokeWeight = 5;
-    dropBox1.width = 90;
-    dropBox1.height = 90;
-    dropBox2.width = 80;
-    dropBox2.height = 80;
-  }
+  if (
+    mouseX > artwork.x &&
+    mouseX < artwork.x + artwork.width &&
+    mouseY > artwork.y &&
+    mouseY < artwork.y + artwork.height
+  ) {
+    // If current turn is an even number:
+    if (currentTurn % 2 == 0) {
+      // Update dropBox1 color
+      dropBox1.fill.r = colorValue[0];
+      dropBox1.fill.g = colorValue[1];
+      dropBox1.fill.b = colorValue[2];
+      dropBox1.fill.alpha = colorValue[3];
+      // Update arrow position
+      dropBoxToPosition = dropBox2.y;
+      // // Update strokeweight
+      // dropBox1.strokeWeight = 5;
+      // dropBox2.strokeWeight = 0;
+      dropBox1.width = 80;
+      dropBox1.height = 80;
+      dropBox2.width = 90;
+      dropBox2.height = 90;
+    }
+    // Or else, if odd number, update dropBox2 color
+    else {
+      dropBox2.fill.r = colorValue[0];
+      dropBox2.fill.g = colorValue[1];
+      dropBox2.fill.b = colorValue[2];
+      dropBox2.fill.alpha = colorValue[3];
+      // Update arrow position
+      dropBoxToPosition = dropBox1.y;
+      // // Update strokeweight
+      // dropBox1.strokeWeight = 0;
+      // dropBox2.strokeWeight = 5;
+      dropBox1.width = 90;
+      dropBox1.height = 90;
+      dropBox2.width = 80;
+      dropBox2.height = 80;
+    }
 
-  // Add 1 to number of turns
-  currentTurn++;
+    // Add 1 to number of turns
+    currentTurn++;
+  }
 }

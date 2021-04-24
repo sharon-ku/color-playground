@@ -1,4 +1,78 @@
 body {
   padding: 0;
   margin: 0;
+  background: black;
+
+  /* display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 1800px; */
+}
+
+p {
+  font-size: 16px;
+}
+
+#open-info-box {
+  position: absolute;
+  top: 680px;
+  left: 50px;
+  /* display: flex; */
+  /* flex-flow: row wrap; */
+  /* align-items: flex-start;
+  justify-content: flex-start;
+  width: 750px;
+  font-family: "Arial", sans-serif;
+
+
+  /* color: grey; */
+
+  /* padding: 0 50px; */
+}
+
+#info-box {
+  position: absolute;
+  top: 720px;
+  /* display: flex; */
+  /* flex-flow: row wrap; */
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 750px;
+  font-family: "Arial", sans-serif;
+  /* background: red; */
+  padding: 0 50px;
+  color: grey;
+  /* background: black; */
+}
+
+.contrast-type {
+  display: flex;
+  flex-flow: row wrap;
+  /* align-items: center; */
+  /* justify-content: flex-start; */
+  /* background: green; */
+}
+
+#info-box article {
+  width: 55%;
+  /* background: blue; */
+  /* height: 50px; */
+}
+
+#info-box figure {
+  width: 25%;
+  background: black;
+  /* height: auto; */
+  /* background: red; */
+  /* padding: none;
+  margin: none; */
+}
+
+figure img {
+  background: black;
+  width: 100%;
+  /* height: auto; */
+  /* margin: none;
+  padding: none; */
 }
